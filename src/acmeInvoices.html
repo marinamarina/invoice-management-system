@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Invoice Editor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript">
+		var xhttp = new XMLHttpRequest();		
+			xhttp.open("GET", "acme.xml?qs=" + new Date().getTime(), false);
+			xhttp.send(""),
+			theData = xhttp.responseXML;
+			
+			
+		xhttp = new XMLHttpRequest();		
+		xhttp.open("GET", "acmeTransform.xsl", false);
+		xhttp.send("");
+		var theTransform = xhttp.responseXML;
+			
+		function displayInvoices() {	
+			var xsltProcessor = new XSLTProcessor(),
+				resultDocument; 
+			
+			xsltProcessor.importStylesheet(theTransform);
+			resultDocument = xsltProcessor.transformToFragment(theData, document);
+			return resultDocument;		
+        }
+
+        function changeInvoiceStatus () {
+			var invoiceID = document.getElementById('invoiceCode').value,
+				newStatus = document.getElementById('newInvoiceStatus').value,
+				found = false;
+
+			
+			for( var i=0; i < theData.getElementsByTagName("invoice").length; i++) {
+			
+        		x = theData.getElementsByTagName("invoice")[i].attributes;
+				att = x.getNamedItem("invoice-code");
+				
+				if (att.value == invoiceID) {
+					theData.getElementsByTagName("invoice")[i].setAttribute("status", newStatus);
+
+					found = true;
+					break;
+				} 
+			}
+			if (!found) {
+				alert("Invoice  was not found.");
+			} else {
+				var resultDocument = displayInvoices();
+
+				myTable.innerHTML ="";
+    			myTable.appendChild(resultDocument);
+			}
+        }
+
+        function clearOldInvoices () {
+        	var invoiceID = document.getElementById('invoiceCode').value,
+        		dateLimit = document.getElementById('dateLimit').value;
+
+        	for( var i=0; i < theData.getElementsByTagName("invoice").length; i++) {
+        		x = theData.getElementsByTagName("invoice")[i].attributes;
+				invoiceStringDate = x.getNamedItem("date").value;
+				invoiceStatus = x.getNamedItem("status").value;
+
+
+				//convert the date stored in xml into date format
+				var tempArr = Array();
+
+				// saving the date from xml to an array	
+				[4,2,2].map( function(item) {
+     				tempArr.push(invoiceStringDate.substr(0, item));
+     				if(invoiceStringDate.length >0) {
+     					invoiceStringDate = invoiceStringDate.substr(item, invoiceStringDate.length-1)
+     				}
+
+				});
+
+				//implode the array back to a string, this time with dashes
+				invoiceStringDate = tempArr.join("-");
+
+
+			var invoice = theData.getElementsByTagName("invoice").item(i);
+
+			if (isLater(dateLimit, invoiceStringDate) && invoiceStatus=="P") {
+
+				element = invoice.parentNode;
+				element.removeChild (invoice);
+				} 				
+        	}
+        	
+        	var resultDocument = displayInvoices();
+
+			myTable.innerHTML ="";		
+    		myTable.appendChild(resultDocument);
+        }
+
+        /* function to convert string dates into dates and compare them */
+        function isLater(str1, str2) {
+    		return new Date(str1) >= new Date(str2);
+		}
+
+        function invoiceStatusReport () {
+        	var sumUnpaid = 0,
+        		sumOverdue = 0,
+        		sumOutstanding = 0;
+
+        	for( var i=0; i < theData.getElementsByTagName("invoice").length; i++) {
+        		x = theData.getElementsByTagName("invoice")[i].attributes;
+				invoiceStatus = x.getNamedItem("status").value;
+				invoiceValue = x.getNamedItem("value").value;
+				if (invoiceStatus=='U') {
+					sumUnpaid += parseFloat(invoiceValue);
+				} else if (invoiceStatus=='O') {
+					sumOverdue += parseFloat(invoiceValue);
+				}
+        	}
+
+        	sumOutstanding = sumUnpaid + sumOverdue;
+
+        	alert("Value unpaid: \t" + sumUnpaid + "\n" + "Value overdue: \t" + sumOverdue + "\n" + "Value outstanding: \t" + sumOutstanding);
+
+
+        }
+
+		window.onload = function() {
+			var displayButton = document.getElementById("displayInvoicesButton"),
+				invoiceStatusUpdateButton = document.getElementById("invoiceStatusUpdateButton"),
+				clearOldInvoicesButton = document.getElementById("clearOldInvoicesButton"),
+				invoiceStatusReportButton = document.getElementById("invoiceStatusReportButton"),
+				myTable = document.getElementById("myTable");
+
+
+
+			displayButton.onclick = function() {
+				var resultDocument = displayInvoices();
+				myTable.innerHTML ="";
+    			myTable.appendChild(resultDocument);
+			};
+			
+			
+			invoiceStatusUpdateButton.onclick = function() {
+				changeInvoiceStatus();			
+			};
+
+			clearOldInvoicesButton.onclick = function() {
+				clearOldInvoices();			
+			};
+
+			invoiceStatusReportButton.onclick = function() {
+				invoiceStatusReport();			
+			}
+		}
+		
+    </script>
+    </head>
+
+    <body>
+     <h1>Invoice Editor</h1>
+    <form name = "controls">
+    <table>
+		
+        <tr>
+            <td><input id="displayInvoicesButton" type = "button" value = "Display Invoices"></td>
+        </tr>
+        <tr>
+            <td><input id="invoiceStatusReportButton" type = "button" value="Invoices Status Report"></td>
+        </tr>
+        <tr>
+            <td>Invoice Code:<input id="invoiceCode" type = "text" name = "invoice"></td>
+            <td>Invoice Status:<select id="newInvoiceStatus" name = "status"><option value = "U">Unpaid</option><option value = "P">Paid</option><option value = "O">Overdue</option></select></td>
+            <td><input id="invoiceStatusUpdateButton" type = "button" value = "Change Invoice Status"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Older Than Date: <input id="dateLimit" type = "text" name="date" /></td>
+            <td><input id="clearOldInvoicesButton" type = "button" value = "Clear Old Invoices"></td>
+        </tr>
+    </table>
+    </form>
+	<div id="myTable" />
+	
+  </body>
+</html>

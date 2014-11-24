@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE invoices SYSTEM "acme.dtd">
+<invoices>
+	<invoice invoice-code="I01" status="U" customer-surname="Morris" customer-first-name="Juliette" description="Monitor repair" date="20081004" value="91.86" />
+	<invoice invoice-code="I02" status="P" customer-surname="Customer" customer-first-name="Reg" description="Keyboard replacement" date="20071024" value="7.89" />
+	<invoice invoice-code="I03" status="O" customer-surname="Yowell" customer-first-name="Sam" description="Graphics upgrade" date="20070505" value="32.26" />
+	<invoice invoice-code="I04" status="U" customer-surname="Smith" customer-first-name="Raymond" description="Hard drive upgrade" date="20070210" value="62.48" />
+	<invoice invoice-code="I05" status="P" customer-surname="Customer" customer-first-name="Reg" description="CPU replacement" date="20071204" value="147.68" />
+	<invoice invoice-code="I06" status="O" customer-surname="Roberts" customer-first-name="Roy" description="Fan replacement" date="20071103" value="25.42" />
+	<invoice invoice-code="I07" status="U" customer-surname="Romario" customer-first-name="Romeo" description="Water cooler install" date="20070808" value="297.44" />
+	<invoice invoice-code="I08" status="P" customer-surname="Jones" customer-first-name="George" description="DVD install" date="20061024" value="62.06" />
+	<invoice invoice-code="I09" status="O" customer-surname="Thompson" customer-first-name="Richard" description="Downgrade to WinXP" date="20080706" value="98.91" />
+	<invoice invoice-code="I10" status="U" customer-surname="Customer" customer-first-name="Reg" description="Keyboard replacement" date="20061024" value="5.63" />
+	<invoice invoice-code="I11" status="P" customer-surname="Stone" customer-first-name="Lisa" description="Virus removal" date="20081115" value="78.66" />
+	<invoice invoice-code="I12" status="O" customer-surname="Customer" customer-first-name="Reg" description="Mouse replacement" date="20070123" value="8.81" />
+	<invoice invoice-code="I13" status="U" customer-surname="Major" customer-first-name="Tom" description="Spacebar oddity" date="20061024" value="7.91" />
+	<invoice invoice-code="I14" status="P" customer-surname="Thompson" customer-first-name="Richard" description="Downgrade to Win2k" date="20081004" value="98.70" />
+	<invoice invoice-code="I15" status="O" customer-surname="Scottson" customer-first-name="Andrew" description="MS Office Install" date="20081004" value="242.79" />
+	<invoice invoice-code="I16" status="U" customer-surname="Sonite" customer-first-name="Sam" description="Netbeans removal" date="20080224" value="24.39" />
+	<invoice invoice-code="I17" status="P" customer-surname="Brown" customer-first-name="Louise" description="Network install" date="20060804" value="99.34" />
+	<invoice invoice-code="I18" status="O" customer-surname="Webb" customer-first-name="Harry" description="Corrupt CD repair" date="20071109" value="33.85" />
+	<invoice invoice-code="I19" status="U" customer-surname="Scottson" customer-first-name="Andrew" description="Mouse replacement" date="20060410" value="9.42" />
+	<invoice invoice-code="I20" status="P" customer-surname="Anderson" customer-first-name="Rebecca" description="Firewall install" date="20080521" value="68.95" />
+	<invoice invoice-code="I21" status="O" customer-surname="White" customer-first-name="Gillian" description="Linux install" date="20070218" value="66.19" />
+	<invoice invoice-code="I22" status="U" customer-surname="Customer" customer-first-name="Reg" description="Virus removal" date="20070516" value="94.49" />
+</invoices>
